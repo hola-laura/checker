@@ -4,7 +4,9 @@ A browser-based demo for reviewing homeownership and mortgage journey copy again
 
 ## Open the demo
 
-The app is `index.html`. It supports pasted copy and exported PNG/JPG screens. Screen text is read in the browser; live Figma links are not connected in this demo.
+The app is `index.html`. It supports pasted copy, exported PNG/JPG screens, and team-specific rules imported from CSV or JSON. Screen text is read in the browser; live Figma links are not connected in this demo.
+
+Imported team rules are saved only in the current browser. Export the CSV and share it with teammates if they need the same rule set.
 
 ## Use
 
