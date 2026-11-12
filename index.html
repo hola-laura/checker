@@ -1,0 +1,465 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FinProm Checker</title>
+<style>
+:root{--ink:#202724;--muted:#68746d;--line:#e4e9e5;--paper:#fbfcfa;--green:#28745b;--red:#bd573e;--amber:#926116;--blue:#3b688e}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:950px;margin:auto;padding:32px 22px 60px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.brand{display:flex;gap:11px;align-items:center;font-weight:700;font-size:18px}.icon{background:#234d3e;color:white;width:38px;height:38px;border-radius:12px;display:grid;place-items:center}.badge{font-size:10px;text-transform:uppercase;letter-spacing:.07em;background:#eef6ef;color:#286047;padding:6px 9px;border-radius:99px;font-weight:800}.intro h1{font-size:27px;letter-spacing:-.7px;line-height:1.2;margin:0 0 8px}.intro p{color:var(--muted);margin:0 0 24px}.tabs{display:flex;border-bottom:1px solid var(--line);gap:4px;margin-bottom:20px}.tab{border:0;background:none;padding:10px 14px;color:var(--muted);font-weight:650;border-bottom:2px solid transparent}.tab.active{color:var(--green);border-color:var(--green)}.panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:21px;box-shadow:0 3px 14px #182a2009}.label{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between}.label small{font-weight:500;color:#87918c}.copy{width:100%;min-height:190px;border:1px solid #d9dfda;border-radius:11px;padding:14px;line-height:1.6;resize:vertical}.copy:focus{outline:3px solid #dcebe2;border-color:#78a58e}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.btn{border:1px solid #d8ded9;border-radius:9px;padding:9px 13px;background:white;font-weight:650;font-size:13px;color:var(--ink)}.primary{background:#234d3e;color:white;border-color:#234d3e}.muted{color:var(--muted);font-size:12px}.results{margin-top:18px}.resulthead{display:flex;justify-content:space-between;align-items:center;margin:12px 0}.resulthead h3{margin:0;font-size:15px}.issue{border:1px solid var(--line);border-radius:11px;padding:13px;margin-top:8px}.issue.high{border-color:#f0d4cc;background:#fffaf8}.issue.medium{border-color:#efe1bd;background:#fffdf8}.issue.low{border-color:#d7e4f0;background:#fbfdff}.issuehead{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.pill{border-radius:99px;font-size:10px;text-transform:uppercase;font-weight:800;padding:3px 7px}.pill.high{background:#fff0ea;color:var(--red)}.pill.medium{background:#fff7e7;color:var(--amber)}.pill.low{background:#eff6fb;color:var(--blue)}.ref{font:11px ui-monospace,monospace;color:#7b8780}.matched{font:12px ui-monospace,monospace;background:#f0f2ef;padding:2px 5px;border-radius:4px}.issue p{font-size:13px;color:#55625b;margin:7px 0}.fix{font-weight:650;color:#354a3e!important}.upload{padding:24px;border:1.5px dashed #cbd7ce;background:#fcfdfb;border-radius:13px;text-align:center}.upload input{font-size:12px}.privacy{margin-top:14px;background:#f4f8f4;border:1px solid #e0ebe1;padding:10px 12px;border-radius:10px;font-size:12px;color:#4f6759}.progress{height:4px;background:#e7ece8;margin-top:12px;border-radius:99px}.progress span{height:100%;display:block;width:0;background:#28745b;transition:width .2s}.filters{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.filter{padding:6px 10px;background:white;border:1px solid var(--line);border-radius:99px;color:var(--muted);font-size:11px}.filter.active{background:#edf5ef;color:#286047}.rrow{border-top:1px solid var(--line);padding:12px 0;display:flex;justify-content:space-between;gap:14px}.rrow p{font-size:12px;color:var(--muted);margin:4px 0}.foot{border-top:1px solid var(--line);margin-top:24px;padding-top:14px;color:#7a857e;font-size:11px}.empty{padding:15px;background:#f7faf8;border-radius:9px;color:var(--muted);font-size:13px}@media(max-width:600px){.shell{padding:20px 14px 44px}.intro h1{font-size:23px}.card{padding:15px}}
+</style></head><body><main class="shell">
+<header class="top"><div class="brand"><span class="icon">✓</span>FinProm Checker</div><span class="badge">Public demo</span></header>
+<section class="intro"><h1>Check mortgage copy before it ships</h1><p>Review copy pasted from Figma or exported screen images. See potential issues, why they matter and suggested fixes.</p></section>
+<nav class="tabs"><button class="tab active" data-id="copy">Copy check</button><button class="tab" data-id="screens">Figma screens</button><button class="tab" data-id="rules">Rules</button></nav>
+<section class="panel active" id="copy"><div class="card"><div class="label">Copy to review <small>Paste text from your design</small></div><textarea class="copy" id="text"></textarea><div class="row"><button class="btn primary" id="check">Check copy</button><button class="btn" id="load">Load demo example</button><span class="muted">Checks run in this browser.</span></div><div class="results" id="results"></div></div></section>
+<section class="panel" id="screens"><div class="card"><div class="label">Review exported Figma screens <small>PNG/JPG</small></div><div class="upload"><p>Export a frame from Figma and upload it here. OCR extracts text in your browser.</p><input id="files" type="file" accept="image/png,image/jpeg" multiple><div id="names" class="muted"></div><div class="progress"><span id="bar"></span></div><p id="status" class="muted" aria-live="polite"></p></div><div class="privacy">🔒 Images are processed locally in your browser and are not uploaded to this site.</div><p class="muted">Live Figma URLs are not connected in this public demo. Export a frame and upload it; no personal token is needed. You can also paste the screen copy below.</p><div class="label">Screen copy <small>OCR text appears here after upload</small></div><textarea class="copy" id="screenCopy" placeholder="Paste copy from this Figma screen, or upload an image above."></textarea><div class="row"><button class="btn primary" id="checkScreen">Check screen copy</button></div><div class="results" id="screenresults"></div></div></section>
+<section class="panel" id="rules"><div class="card"><div class="label">Rule library <small id="count"></small></div><p class="muted">Switch checks on or off for your session.</p><div id="filters" class="filters"></div><div id="ruleRows"></div></div></section>
+<footer class="foot">Automated first-pass checker, not compliance approval. It may miss context, prominence, layout or representative-example requirements. Have a qualified reviewer check the final promotion.</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js"></script><script>
+const data={
+  "version": "1.0",
+  "meta": {
+    "source": "Monzo FinProm guide — Mortgages (MCOB 3A)",
+    "lastUpdated": "2026-04-21"
+  },
+  "rules": [
+    {
+      "id": "advisory-language-best",
+      "enabled": true,
+      "category": "advisory-language",
+      "severity": "high",
+      "pattern": "\\b(best deal|best mortgage|best rate|best option|best choice|best pick|top pick|top deal|top choice)\\b",
+      "flags": "i",
+      "reason": "Sounds like personal financial advice. MCOB 3A says marketing must not constitute personal recommendations.",
+      "fix": "Remove or replace with neutral language like \"a deal matched to your details\" or \"Habito's recommendation\".",
+      "mcobRef": "MCOB 3A.2.4R"
+    },
+    {
+      "id": "advisory-language-should",
+      "enabled": true,
+      "category": "advisory-language",
+      "severity": "high",
+      "pattern": "\\b(you should (get|take|fix|choose|go with)|if I was you|perfect for you|suit(s)? you|right for your situation)\\b",
+      "flags": "i",
+      "reason": "Implies personal advice from Monzo. The FinProm guide lists these as phrases to avoid.",
+      "fix": "Use \"check if the mortgage meets your needs\" or \"consider whether this product is suitable for your situation\".",
+      "mcobRef": "MCOB 3A.2.4R"
+    },
+    {
+      "id": "advisory-language-recommendation",
+      "enabled": true,
+      "category": "advisory-language",
+      "severity": "high",
+      "pattern": "\\b(we recommend|our recommendation|monzo recommends|we('ve| have) found|we('ve| have) picked|we suggest|our pick)\\b",
+      "flags": "i",
+      "reason": "Makes it sound like Monzo is giving advice. Monzo's role is introducer to Habito, not advisor.",
+      "fix": "Attribute to Habito: \"Habito's recommendation\" or \"Recommended by Habito based on your details\".",
+      "mcobRef": "MCOB 3A.3.1R"
+    },
+    {
+      "id": "promotional-language",
+      "enabled": true,
+      "category": "promotional",
+      "severity": "medium",
+      "pattern": "\\b(amazing|incredible|unbeatable|unrivalled|exclusive|unmissable|don't miss|limited time|act now|hurry|lowest fees|cheapest)\\b",
+      "flags": "i",
+      "reason": "Promotional or pressure language. Creates urgency or false expectations about the product.",
+      "fix": "Remove promotional wording. Use factual, neutral descriptions.",
+      "mcobRef": "MCOB 3A.2.4R"
+    },
+    {
+      "id": "urgency-language",
+      "enabled": true,
+      "category": "promotional",
+      "severity": "medium",
+      "pattern": "\\b(before (rates?|they|it) go(es)? up|lock in|secure your rate|don't wait|last chance|ending soon|while (stocks|it) last)\\b",
+      "flags": "i",
+      "reason": "Creates unnecessary urgency. The guide says not to exploit behavioural biases or create false expectations.",
+      "fix": "Remove urgency framing. State facts: \"Rates may change before your application is completed.\"",
+      "mcobRef": "MCOB 3A.2.4R2b"
+    },
+    {
+      "id": "guaranteed-approval",
+      "enabled": true,
+      "category": "misleading",
+      "severity": "high",
+      "pattern": "\\b(guaranteed|pre-?approved|100% (acceptance|approval)|everyone('s| is) (approved|accepted|eligible)|no (credit )?checks?)\\b",
+      "flags": "i",
+      "reason": "No lender can guarantee approval without affordability assessment. This creates false expectations.",
+      "fix": "Use \"Subject to eligibility\" or \"Subject to status and credit checks.\"",
+      "mcobRef": "MCOB 3A.2.4R2b"
+    },
+    {
+      "id": "free-advice-claim",
+      "enabled": true,
+      "category": "misleading",
+      "severity": "high",
+      "pattern": "\\b(free advice|totally free|completely free|no cost|at no charge)\\b",
+      "flags": "i",
+      "reason": "Cannot say \"free advice\" because the customer pays indirectly via the lender. The guide specifically prohibits this. Homeownership toolkit: use \"fee-free\" instead.",
+      "fix": "Use \"fee-free\". E.g. \"Habito's advice is 100% fee-free. They're paid by your lender so there's no cost to you.\"",
+      "mcobRef": "MCOB 3A.3.1R + Homeownership toolkit"
+    },
+    {
+      "id": "whole-market-claim",
+      "enabled": true,
+      "category": "claims",
+      "severity": "medium",
+      "pattern": "\\b(whole (of )?market|every (lender|deal|mortgage)|all (lenders|deals|mortgages)|compared (the|every) (whole )?market)\\b",
+      "flags": "i",
+      "reason": "\"Whole of market\" claims need to go through the claims approval process before use.",
+      "fix": "Remove or soften: \"access to deals from 90+ lenders\" (if verified).",
+      "mcobRef": "MCOB 3A.3.1R1"
+    },
+    {
+      "id": "missing-risk-warning",
+      "enabled": true,
+      "category": "missing-disclaimer",
+      "severity": "high",
+      "pattern": null,
+      "contentCheck": "requires-text",
+      "requiredText": "your home may be repossessed if you do not keep up repayments on your mortgage",
+      "flags": "i",
+      "reason": "Mandatory risk warning for all mortgage financial promotions. Must appear prominently, usually above the first call to action.",
+      "fix": "Add: \"Your home may be repossessed if you do not keep up repayments on your mortgage.\"",
+      "mcobRef": "MCOB 5.6.124R"
+    },
+    {
+      "id": "missing-eligibility",
+      "enabled": true,
+      "category": "missing-disclaimer",
+      "severity": "high",
+      "pattern": null,
+      "contentCheck": "requires-text",
+      "requiredText": "subject to eligibility",
+      "flags": "i",
+      "reason": "\"Subject to eligibility\" is a mandatory minimum item for every mortgage financial promotion.",
+      "fix": "Add: \"Subject to eligibility\"",
+      "mcobRef": "MCOB 3A.2.4R"
+    },
+    {
+      "id": "missing-tsandcs",
+      "enabled": true,
+      "category": "missing-disclaimer",
+      "severity": "medium",
+      "pattern": null,
+      "contentCheck": "requires-text",
+      "requiredText": "t(s&|erms and )c(s|onditions)",
+      "flags": "i",
+      "reason": "\"Ts&Cs apply\" is required to explain that conditions apply beyond what's shown in the promotion.",
+      "fix": "Add: \"Ts&Cs apply\" — link to actual terms where possible.",
+      "mcobRef": "MCOB 3A.2.4R"
+    },
+    {
+      "id": "missing-habito-attribution",
+      "enabled": true,
+      "category": "missing-disclaimer",
+      "severity": "high",
+      "pattern": null,
+      "contentCheck": "requires-text",
+      "requiredText": "(monzo will introduce you to habito|habito.*(regulated|mortgage (advis|brok))|provided by habito|our brokers habito)",
+      "flags": "i",
+      "reason": "Must be clear that Monzo introduces to Habito for advice. Monzo is not the advisor or lender. Homeownership toolkit: refer to Habito as \"our brokers Habito\".",
+      "fix": "Add: \"Monzo will introduce you to our brokers Habito. Habito acts as a broker, helping you find and arrange the right mortgage. If you go ahead, they'll receive a fee from your lender.\"",
+      "mcobRef": "MCOB 3A.3.2R + Homeownership toolkit"
+    },
+    {
+      "id": "monzo-as-provider",
+      "enabled": true,
+      "category": "attribution",
+      "severity": "high",
+      "pattern": "\\b(monzo('s|s)? mortgage|monzo (offer|provide|give|lend)|our mortgage|get a mortgage (from|with|through) monzo)\\b",
+      "flags": "i",
+      "reason": "Must not imply Monzo is the mortgage provider or advisor. Mortgages come from third-party lenders via Habito.",
+      "fix": "Make clear Monzo introduces to Habito: \"Monzo will introduce you to Habito who will provide mortgage advice.\"",
+      "mcobRef": "MCOB 3A.3.1R"
+    },
+    {
+      "id": "monzo-as-advisor",
+      "enabled": true,
+      "category": "attribution",
+      "severity": "high",
+      "pattern": "\\b(monzo (advis|found|picked|chose|selected|matched)|our (expert|advisor|specialist)|your monzo (expert|advisor))\\b",
+      "flags": "i",
+      "reason": "Implies Monzo is the advisor. Advice comes from Habito, not Monzo.",
+      "fix": "Attribute to Habito: \"Habito mortgage expert\" or \"Recommended by Habito\".",
+      "mcobRef": "MCOB 3A.3.1R"
+    },
+    {
+      "id": "our-partner-language",
+      "enabled": true,
+      "category": "attribution",
+      "severity": "low",
+      "pattern": "\\b(our partner|monzo('s|s)? partner)\\b",
+      "flags": "i",
+      "reason": "\"Our partner\" implies a joint venture or co-ownership. Monzo's role is introducer.",
+      "fix": "Use the introducer framing: \"Monzo will introduce you to Habito\" or just \"Habito\".",
+      "mcobRef": "MCOB 3A.3.2R"
+    },
+    {
+      "id": "rate-without-context",
+      "enabled": true,
+      "category": "rates-and-costs",
+      "severity": "high",
+      "pattern": "\\b\\d+\\.\\d+\\s*%\\s*(interest|rate|APR|fixed|variable|tracker)\\b",
+      "flags": "i",
+      "reason": "Showing an interest rate triggers the requirement for a full representative example (APRC, total payable, instalments, etc.).",
+      "fix": "Either remove the rate or include a representative example nearby.",
+      "mcobRef": "MCOB 3A.5.1R"
+    },
+    {
+      "id": "monthly-payment-without-context",
+      "enabled": true,
+      "category": "rates-and-costs",
+      "severity": "medium",
+      "pattern": "\\b£\\s*\\d[\\d,]*\\s*(per|a|/|each)\\s*month",
+      "flags": "i",
+      "reason": "Showing specific monthly payment figures is a cost-of-credit claim that may trigger representative example requirements.",
+      "fix": "Include a representative example or add: \"For information only. Subject to eligibility.\"",
+      "mcobRef": "MCOB 3A.5.1R"
+    },
+    {
+      "id": "exit-fee-wrong-term",
+      "enabled": true,
+      "category": "terminology",
+      "severity": "medium",
+      "pattern": "\\b(exit fee|exit charge|exit penalty|early exit|leaving fee)\\b",
+      "flags": "i",
+      "reason": "FCA prescribes the term \"early repayment charge\". Using other terms is not permitted.",
+      "fix": "Use the FCA-prescribed term: \"early repayment charge\".",
+      "mcobRef": "MCOB 3A.2.6R"
+    },
+    {
+      "id": "equity-release-wrong-term",
+      "enabled": true,
+      "category": "terminology",
+      "severity": "medium",
+      "pattern": "\\bequity release\\b",
+      "flags": "i",
+      "reason": "FCA prescribes the term \"lifetime mortgage\". \"Equity release\" is not permitted.",
+      "fix": "Use the FCA-prescribed term: \"lifetime mortgage\".",
+      "mcobRef": "MCOB 3A.2.6R"
+    },
+    {
+      "id": "missing-information-only",
+      "enabled": true,
+      "category": "missing-disclaimer",
+      "severity": "medium",
+      "pattern": null,
+      "contentCheck": "conditional-requires-text",
+      "triggerPattern": "\\b(deal|rate|mortgage|repayment|lender|APRC|borrow)\\b",
+      "requiredText": "for information only",
+      "flags": "i",
+      "reason": "When showing deals or rates, must state that no affordability checks have been carried out and the deal is for information only.",
+      "fix": "Add: \"For information only. No affordability or credit checks have been carried out by Monzo.\"",
+      "mcobRef": "MCOB 3A.5.1R"
+    },
+    {
+      "id": "green-claims",
+      "enabled": true,
+      "category": "greenwashing",
+      "severity": "medium",
+      "pattern": "\\b(green mortgage|sustainable|eco-?friendly|carbon[ -]?neutral|net[ -]?zero|ESG)\\b",
+      "flags": "i",
+      "reason": "Green claims in mortgage promotions must comply with the ESG sourcebook (ESG 4.3.1R) in addition to MCOB rules.",
+      "fix": "Green claims must go through the claims approval process. Remove or get approval first.",
+      "mcobRef": "MCOB 3A.2.2AG"
+    },
+    {
+      "id": "fixed-rate-no-end",
+      "enabled": true,
+      "category": "rates-and-costs",
+      "severity": "medium",
+      "pattern": null,
+      "flags": "i",
+      "contentCheck": "conditional-requires-text",
+      "triggerPattern": "\\bfixed (rate|for \\d+ years?)\\b",
+      "requiredText": "(then|after|variable|SVR|standard variable|revert)",
+      "reason": "When mentioning fixed rate mortgages, must state what happens after the fixed period ends.",
+      "fix": "Add what happens after: \"then moves to the lender's standard variable rate (SVR).\"",
+      "mcobRef": "MCOB 3A.5.1R1c"
+    },
+    {
+      "id": "use-home-not-property",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\b(propert(y|ies))\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: use \"home\" instead of \"property\". \"Property\" is formal language people don't use when speaking out loud.",
+      "fix": "Replace with \"home\" (or \"homes\" for plural). Exception: if someone has multiple properties in Monzo.",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "use-home-not-house",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\byour (house|flat)\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: use \"home\" instead of \"house\" or \"flat\". \"Home\" covers all types of buildings.",
+      "fix": "Replace with \"your home\".",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "ltv-hyphenation",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\bloan-to-value\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: write \"loan to value\" without hyphens. Keyword research shows this is the most commonly used format.",
+      "fix": "Write \"loan to value\" (no hyphens). Abbreviate to \"LTV\" after first mention.",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "fee-free-not-free",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "medium",
+      "pattern": "\\b(100%\\s*free|totally free|completely free|it('|i)?s free)\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: Habito's advice is \"fee-free\", not \"free\". The customer pays indirectly via the lender.",
+      "fix": "Use \"fee-free\" instead of \"free\". E.g. \"Habito's advice is 100% fee-free.\"",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "trustpilot-spelling",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\b(TrustPilot|Trust Pilot|Trust-Pilot|Trust-pilot|trustpilot)\\b",
+      "flags": "",
+      "reason": "Bank Basics toolkit: it's \"Trustpilot\" (capital T, lowercase p, one word). Never \"TrustPilot\" or \"Trust Pilot\".",
+      "fix": "Write \"Trustpilot\" (one word, only capital T).",
+      "mcobRef": "Bank Basics toolkit"
+    },
+    {
+      "id": "which-recommended-abbrev",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\bWPA\\b",
+      "flags": "",
+      "reason": "Bank Basics toolkit: write \"Which? Recommended Provider\" in full. Don't abbreviate to \"WPA\" because it won't be clear to customers.",
+      "fix": "Write \"Which? Recommended Provider\" in full.",
+      "mcobRef": "Bank Basics toolkit"
+    },
+    {
+      "id": "protects-your-money",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "medium",
+      "pattern": "\\b(protect(s|ing)? your money|keep(s|ing)? your money safe)\\b",
+      "flags": "i",
+      "reason": "Bank Basics toolkit: FinProm says we can't write \"protects your money\" because it implies Monzo is unique in doing that. Use passive voice: \"your money is protected\".",
+      "fix": "Rewrite as \"your money is protected\" (passive) or \"a bank where your money is protected\".",
+      "mcobRef": "Bank Basics toolkit"
+    },
+    {
+      "id": "fully-regulated-no-hyphen",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\bfully regulated\\b",
+      "flags": "i",
+      "reason": "Bank Basics toolkit: write \"fully-regulated\" with a hyphen when used as a compound adjective before a noun.",
+      "fix": "Write \"fully-regulated\" (with hyphen).",
+      "mcobRef": "Bank Basics toolkit"
+    },
+    {
+      "id": "habito-advisor-not-broker",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\bHabito.{0,20}(advisor|adviser)\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: Habito are \"brokers\", not \"advisors\". The toolkit consistently uses \"our brokers Habito\" and \"Habito's brokers\".",
+      "fix": "Use \"broker\" or \"our brokers Habito\". E.g. \"Habito is a regulated mortgage broker.\"",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "fee-not-fee-free",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "medium",
+      "pattern": "\\b(no cost to you|no fee|without (a |any )?fee|don'?t charge a fee|free of charge)\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: use \"fee-free\" as the standard term. The toolkit says \"Habito's advice is 100% fee-free\" and \"They're paid by your lender so there's no cost to you.\"",
+      "fix": "Use \"fee-free\". E.g. \"Habito's advice is fee-free — they're paid by your lender.\"",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "marketing-y-language",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\b(game[- ]?changer|revolutionary|transform(ative|ing)?|unlock(ing)?|supercharge|turbocharge|level[- ]?up|power(ful|ing)|seamless(ly)?|cutting[- ]?edge)\\b",
+      "flags": "i",
+      "reason": "Homeownership toolkit: avoid messaging that's too abstract or \"marketing-y\". Be action-oriented and specific instead.",
+      "fix": "Replace with specific, action-oriented language. Say what the feature does, not how it feels.",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "habito-by-monzo-overuse",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "Habito by Monzo",
+      "flags": "",
+      "reason": "Homeownership toolkit: use the logo where possible instead of writing \"Habito by Monzo\". After the first mention, shorten to \"our brokers Habito\" or just \"Habito\".",
+      "fix": "Use the Habito by Monzo logo, or shorten to \"Habito\" after the first mention.",
+      "mcobRef": "Homeownership toolkit"
+    },
+    {
+      "id": "missing-total-repayable",
+      "enabled": true,
+      "category": "missing-disclaimer",
+      "severity": "medium",
+      "pattern": null,
+      "contentCheck": "conditional-requires-text",
+      "triggerPattern": "\\b\\d+\\.\\d+\\s*%",
+      "requiredText": "total\\s+(you'?ll|you'?d|you would|amount|repayable)|total.{0,20}repay|amount\\s+repayable",
+      "flags": "i",
+      "reason": "Showing a rate triggers the representative-example requirement (MCOB 3A.5.1R). The total amount the customer would repay across the full term is a core part of that example.",
+      "fix": "Add a line like \"Total you'd repay (25 yrs): £287,420\" alongside the other figures.",
+      "mcobRef": "MCOB 3A.5.1R"
+    },
+    {
+      "id": "missing-monthly-caveat",
+      "enabled": true,
+      "category": "rates-and-costs",
+      "severity": "medium",
+      "pattern": null,
+      "contentCheck": "conditional-requires-text",
+      "triggerPattern": "£\\s*\\d[\\d,]*\\s*(/|per|a\\s+)month|\\bmonthly\\s+repayment\\b",
+      "requiredText": "for the first|for \\d+ years?|fixed for|only for|then changes|then reverts?|after the fix|for the fixed period",
+      "flags": "i",
+      "reason": "A specific monthly payment figure without a time caveat can mislead — readers will assume it is the ongoing cost. If the figure only applies for the fixed period, that must be said where the figure is.",
+      "fix": "Add a caveat near the monthly figure, e.g. \"for the first 2 years, then the monthly payment changes\".",
+      "mcobRef": "MCOB 3A.5.1R"
+    },
+    {
+      "id": "formal-language-swap",
+      "enabled": true,
+      "category": "writing-toolkit",
+      "severity": "low",
+      "pattern": "\\b(utilise|utilised|utilising|assistance|commence|commenced|commencing|terminate|terminated|prior to|in order to|endeavour)\\b",
+      "flags": "i",
+      "reason": "Monzo writing guide — swap formal business-English words for the plain alternatives. Reads colder and less human otherwise.",
+      "fix": "Use: \"use\" (utilise), \"help\" (assistance), \"start\" (commence), \"end\" (terminate), \"before\" (prior to), \"to\" (in order to), \"try\" (endeavour).",
+      "mcobRef": "Monzo writing toolkit"
+    }
+  ]
+}
+
+,enabled={};data.rules.forEach(r=>enabled[r.id]=r.enabled!==false);
+const box=document.getElementById("text"),sample="Your best mortgage deal is ready. Get an amazing rate at 2.5% fixed. You should secure your rate now. We recommend choosing this option.";
+const repl={"advisory-language-best":"a deal based on your details","advisory-language-should":"consider whether this is suitable","advisory-language-recommendation":"Habito's recommendation","monzo-as-provider":"mortgage advice via Habito","monzo-as-advisor":"Habito mortgage expert","our-partner-language":"Habito","exit-fee-wrong-term":"early repayment charge","equity-release-wrong-term":"lifetime mortgage","use-home-not-property":"home","use-home-not-house":"your home","ltv-hyphenation":"loan to value","fee-free-not-free":"fee-free","trustpilot-spelling":"Trustpilot","which-recommended-abbrev":"Which? Recommended Provider","protects-your-money":"your money is protected","fully-regulated-no-hyphen":"fully-regulated","habito-advisor-not-broker":"broker","fee-not-fee-free":"fee-free"};
+function test(p,f,t){try{return new RegExp(p,f||"i").test(t)}catch(e){return false}}
+function scan(t){let out=[];data.rules.forEach(r=>{if(!enabled[r.id])return;let fl=(r.flags||"gi").includes("g")?(r.flags||"gi"):(r.flags||"i")+"g";if(r.pattern){try{let re=new RegExp(r.pattern,fl),m,n=0;while((m=re.exec(t))&&n++<100){if(!m[0].length){re.lastIndex++;continue}out.push({r:r,hit:m[0],start:m.index,end:m.index+m[0].length})}}catch(e){}}if(r.contentCheck==="requires-text"&&r.requiredText&&!test(r.requiredText,r.flags,t))out.push({r:r,hit:"(missing)",start:-1,end:-1});if(r.contentCheck==="conditional-requires-text"&&r.triggerPattern&&r.requiredText&&test(r.triggerPattern,r.flags,t)&&!test(r.requiredText,r.flags,t))out.push({r:r,hit:"(missing)",start:-1,end:-1})});return out.filter((m,i,a)=>a.findIndex(x=>x.r.id===m.r.id&&x.start===m.start&&x.hit===m.hit)===i)}
+function makeFixed(t,ms){let s=t;ms.filter(m=>m.start>=0&&repl[m.r.id]).sort((a,b)=>b.start-a.start).forEach(m=>s=s.slice(0,m.start)+repl[m.r.id]+s.slice(m.end));let add=[];ms.forEach(m=>{if(m.start!==-1)return;let id=m.r.id;if(id==="missing-risk-warning")add.push("Your home may be repossessed if you do not keep up repayments on your mortgage.");if(id==="missing-eligibility")add.push("Subject to eligibility.");if(id==="missing-tsandcs")add.push("Ts&Cs apply.");if(id==="missing-habito-attribution")add.push("Monzo will introduce you to our brokers Habito, who will provide mortgage advice.");if(id==="missing-information-only")add.push("For information only. No affordability or credit checks have been carried out by Monzo.")});return add.length?s.trimEnd()+"\n\n"+add.join(" "):s}
+function node(tag,cls,txt){let n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n}
+function results(t,target){let ms=scan(t);target.innerHTML="";let high=ms.some(m=>m.r.severity==="high")?"high":ms.some(m=>m.r.severity==="medium")?"medium":ms.length?"low":"none";let h=node("div","resulthead");h.append(node("h3","","Review results"),node("span","muted",ms.length+" potential issue"+(ms.length===1?"":"s")+" · Highest severity: "+high));target.append(h);if(!ms.length){target.append(node("div","empty","No active rules matched. This does not confirm compliance."));return}ms.forEach(m=>{let c=node("article","issue "+m.r.severity),top=node("div","issuehead");top.append(node("span","pill "+m.r.severity,m.r.severity),node("span","ref",m.r.mcobRef));if(m.hit!=="(missing)")top.append(node("code","matched",m.hit));c.append(top,node("p","",m.r.reason),node("p","fix","Suggested fix: "+m.r.fix));target.append(c)});let d=node("details","issue");d.append(node("summary","","View suggested copy"));let p=node("p","",makeFixed(t,ms));p.style.whiteSpace="pre-wrap";d.append(p);target.append(d)}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.id))});
+document.getElementById("check").onclick=()=>results(box.value,document.getElementById("results"));document.getElementById("checkScreen").onclick=()=>results(document.getElementById("screenCopy").value,document.getElementById("screenresults"));document.getElementById("load").onclick=()=>{box.value=sample;results(box.value,document.getElementById("results"))};
+const labels={"advisory-language":"Advisory language","promotional":"Promotional language","misleading":"Misleading claims","claims":"Claims","missing-disclaimer":"Disclaimers","attribution":"Attribution","rates-and-costs":"Rates and costs","terminology":"Terminology","greenwashing":"Green claims","writing-toolkit":"Writing toolkit"};let cat="all";
+function showRules(){let fs=document.getElementById("filters");fs.innerHTML="";["all",...new Set(data.rules.map(r=>r.category))].forEach(c=>{let b=node("button","filter"+(cat===c?" active":""),c==="all"?"All":(labels[c]||c));b.onclick=()=>{cat=c;showRules()};fs.append(b)});let wrap=document.getElementById("ruleRows");wrap.innerHTML="";data.rules.filter(r=>cat==="all"||r.category===cat).forEach(r=>{let row=node("div","rrow"),left=node("div");left.append(node("strong","",r.id),node("p","",r.reason),node("p","",r.mcobRef));let cb=document.createElement("input");cb.type="checkbox";cb.checked=enabled[r.id];cb.setAttribute("aria-label","Enable "+r.id);cb.onchange=()=>enabled[r.id]=cb.checked;row.append(left,cb);wrap.append(row)});document.getElementById("count").textContent=data.rules.length+" checks"}showRules();
+box.value=sample;results(sample,document.getElementById("results"));
+document.getElementById("files").onchange=async e=>{let fs=Array.from(e.target.files||[]);if(!fs.length)return;document.getElementById("names").textContent=fs.map(f=>f.name).join(", ");let st=document.getElementById("status"),bar=document.getElementById("bar");if(!window.Tesseract){st.textContent="OCR could not load. Paste the copy in Copy check instead.";return}if(fs.some(f=>f.size>10000000)){st.textContent="Please use images smaller than 10 MB each.";return}let worker;try{st.textContent="Image selected. Preparing OCR…";bar.style.width="5%";worker=await Tesseract.createWorker("eng",1,{logger:m=>{if(m.status==="recognizing text"){bar.style.width=Math.round(m.progress*100)+"%";st.textContent="Reading screen text… "+Math.round(m.progress*100)+"%"}}});st.textContent="Reading screen text…";let texts=[];for(let f of fs){let res=await worker.recognize(f);if(res.data.text.trim())texts.push(res.data.text.trim())}await worker.terminate();worker=null;box.value=texts.join("\n\n");bar.style.width="100%";st.textContent=box.value?"Reading complete. Potential issues are shown below.":"OCR finished but found no readable text. Paste the copy into Screen copy below.";if(box.value){results(box.value,document.getElementById("screenresults"));}}catch(err){if(worker)await worker.terminate();st.textContent="Could not read this image. Try PNG/JPG or paste the copy manually."}};
+</script></body></html>
