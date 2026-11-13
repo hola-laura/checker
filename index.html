@@ -153,6 +153,14 @@ body{background:#0b1f2d;color:#f5f8fc}
  #screens .scope-row select{width:100%}
 }
 
+
+/* Keep the screen-context control anchored to the left edge of its section */
+#screens .scope-row{display:flex;flex-direction:column;align-items:flex-start;text-align:left;width:100%}
+#screens .scope-row label{align-self:flex-start;text-align:left;width:100%}
+#screens .scope-row select{display:block;align-self:flex-start;float:none;width:min(100%,360px);min-width:0;max-width:100%;margin:0;text-align:left}
+#screens .scope-row p{align-self:flex-start;text-align:left;width:100%;margin-left:0}
+@media(max-width:600px){#screens .scope-row select{width:min(100%,360px)}}
+
 </style></head><body><main class="shell">
 <header class="top"><div class="brand"><span class="icon">✓</span>FinProm Checker</div></header>
 <section class="intro"><div class="editable-title-row"><h1 id="pageTitle">Check mortgage copy before it ships</h1><button class="edit-title-btn" id="editTitle" type="button">Edit title</button></div><form class="title-editor" id="titleEditor" hidden><label for="titleInput">Tool title</label><input id="titleInput" maxlength="90" value="Check mortgage copy before it ships"><button class="btn primary" type="submit">Save title</button><button class="btn" id="cancelTitle" type="button">Cancel</button></form><p>Review copy pasted from Figma or exported screen images. See potential issues, why they matter and suggested fixes.</p></section>
