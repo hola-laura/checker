@@ -65,7 +65,7 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',Arial,sans-s
 @media(max-width:600px){.editable-title-row{display:block}.edit-title-btn{margin-top:12px}}
 
 </style></head><body><main class="shell">
-<header class="top"><div class="brand"><span class="icon">✓</span>FinProm Checker</div><span class="badge">Public demo</span></header>
+<header class="top"><div class="brand"><span class="icon">✓</span>FinProm Checker</div></header>
 <section class="intro"><div class="editable-title-row"><h1 id="pageTitle">Check mortgage copy before it ships</h1><button class="edit-title-btn" id="editTitle" type="button">Edit title</button></div><form class="title-editor" id="titleEditor" hidden><label for="titleInput">Tool title</label><input id="titleInput" maxlength="90" value="Check mortgage copy before it ships"><button class="btn primary" type="submit">Save title</button><button class="btn" id="cancelTitle" type="button">Cancel</button></form><p>Review copy pasted from Figma or exported screen images. See potential issues, why they matter and suggested fixes.</p></section>
 <nav class="tabs"><button class="tab active" data-id="copy">Copy check</button><button class="tab" data-id="screens">Figma screens</button><button class="tab" data-id="rules">Rules</button></nav>
 <section class="panel active" id="copy"><div class="card"><div class="label">Copy to review <small>Paste text from your design</small></div><textarea class="copy" id="text"></textarea><div class="row"><button class="btn primary" id="check">Check copy</button><button class="btn" id="load">Load demo example</button><span class="muted">Checks run in this browser.</span></div><div class="results" id="results"></div></div></section>
