@@ -64,6 +64,74 @@ body{background:var(--paper);color:var(--ink);font-family:'DM Sans',Arial,sans-s
 .title-editor input:focus{outline:3px solid #ff4f5e30;border-color:#ff4f5e}
 @media(max-width:600px){.editable-title-row{display:block}.edit-title-btn{margin-top:12px}}
 
+
+/* Visual direction adapted from the Monzo Business mobile dashboard frame */
+:root{
+ --ink:#f5f8fc;--muted:#a8b8c6;--line:#284256;--paper:#0b1f2d;
+ --green:#18a8d0;--red:#ff6471;--amber:#f0bd54;--blue:#43c8e8;
+ --monzo-navy:#0b1f2d;--monzo-coral:#16a8ce;--monzo-blue:#1b3a50;
+}
+body{background:#0b1f2d;color:#f5f8fc}
+.shell{max-width:1060px}
+.brand{color:#f5f8fc}
+.icon{background:#b8f23b;color:#0b1f2d;box-shadow:none;border-radius:50%}
+.badge{background:#18394d;color:#a8b8c6}
+.intro{background:#102b3d;border:1px solid #1b3b50;color:#f5f8fc;box-shadow:0 8px 24px #03111d40}
+.intro:after{background:#18a8d01a}
+.intro h1{color:#fff}
+.intro p{color:#adbdca}
+.tabs{gap:8px}
+.tab{background:#142e40;color:#aebdca;border:1px solid #254258}
+.tab:hover{background:#1b3b50;color:#fff}
+.tab.active{background:#1aa8ce;color:#062232;border-color:#1aa8ce}
+.card{background:#122c3e;border:1px solid #203d51;box-shadow:0 8px 22px #020e1870}
+.label{color:#f4f8fb}
+.label small,.muted{color:#a8b8c6}
+.copy{background:#0c2232;color:#f4f8fb;border:1px solid #345267}
+.copy::placeholder{color:#8295a5}
+.copy:focus{outline:3px solid #16a8ce35;border-color:#17b5d8}
+.scope-row select{background:#0c2232;color:#f4f8fb;border-color:#345267}
+.btn{background:#183448;color:#eaf2f7;border-color:#345267}
+.btn:hover{background:#21435a;box-shadow:0 4px 12px #0005}
+.primary{background:#1aa8ce;color:#062232;border-color:#1aa8ce}
+.primary:hover{background:#36bfde;border-color:#36bfde}
+.file-button{background:#183448;color:#f4f8fb;border-color:#3d5b70}
+.upload{background:#0e293b;border-color:#3a6178}
+.upload.dragover{background:#12394b;border-color:#17b5d8;box-shadow:inset 0 0 0 2px #17627a}
+.upload-icon{background:#193c50;color:#b8f23b;border:1px solid #2b5268}
+.upload-title{color:#f6f9fc}
+.upload-description{color:#b1c0cc}
+.upload-meta{color:#98aaba}
+.preview-item{background:#112c3e;border-color:#2a465b}
+.preview-item img{background:#0b1f2d}
+.preview-item figcaption{color:#a8b8c6}
+.privacy{background:#153246;border-color:#284d64;color:#c2d1dc}
+.progress{background:#1d3a4e}.progress span{background:#b8f23b}
+.issue{background:#122c3e;border-color:#2a465a}
+.issue.high{background:#352b38;border-color:#68404c}
+.issue.medium{background:#352f29;border-color:#66553a}
+.issue.low{background:#132f40;border-color:#2b5268}
+.pill.high{background:#582e39;color:#ff929a}
+.pill.medium{background:#51432e;color:#ffd47d}
+.pill.low{background:#173d50;color:#78daf1}
+.ref{color:#a8b8c6}
+.matched{background:#203b4f;color:#eff6fa}
+.issue p{color:#c0ccd5}
+.fix{color:#f2f6f8!important}
+.empty{background:#153246;color:#bdcbd5}
+.empty.no-matches{color:#ff7780;background:#3a2631;border-color:#71404c}
+.resulthead h3{color:#f5f8fc}
+.filter{background:#142e40;border-color:#28465b;color:#b2c1cd}
+.filter.active{background:#1aa8ce;color:#062232;border-color:#1aa8ce}
+.rrow{border-color:#294458}
+.foot{border-color:#284256;color:#90a3b2}
+.title-editor label{color:#bdcbd5}
+.title-editor input{background:#0c2232;color:#f4f8fb;border-color:#345267}
+@media(max-width:600px){
+ .intro{background:#102b3d}
+ .card{background:#122c3e}
+}
+
 </style></head><body><main class="shell">
 <header class="top"><div class="brand"><span class="icon">✓</span>FinProm Checker</div></header>
 <section class="intro"><div class="editable-title-row"><h1 id="pageTitle">Check mortgage copy before it ships</h1><button class="edit-title-btn" id="editTitle" type="button">Edit title</button></div><form class="title-editor" id="titleEditor" hidden><label for="titleInput">Tool title</label><input id="titleInput" maxlength="90" value="Check mortgage copy before it ships"><button class="btn primary" type="submit">Save title</button><button class="btn" id="cancelTitle" type="button">Cancel</button></form><p>Review copy pasted from Figma or exported screen images. See potential issues, why they matter and suggested fixes.</p></section>
